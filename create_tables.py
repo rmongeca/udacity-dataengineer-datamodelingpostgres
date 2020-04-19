@@ -21,16 +21,7 @@ def create_database(cursor, connection):
     """
     try:
         sql.execute("DROP DATABASE IF EXISTS sparkifydb", cursor)
-        # Create UTF8 DB template in DBMG
-        sql.execute("UPDATE pg_database SET datistemplate = FALSE \
-            WHERE datname = 'template1'", cursor)
-        sql.execute("DROP DATABASE template1", cursor)
-        sql.execute("CREATE DATABASE template1 WITH TEMPLATE = template0 \
-            ENCODING = 'UTF8';", cursor)
-        sql.execute("UPDATE pg_database SET datistemplate = TRUE \
-            WHERE datname = 'template1'", cursor)
-        # Create new UTF encoded sparkifydb
-        sql.execute("CREATE DATABASE sparkifydb ENCODING='UTF8'", cursor)
+        sql.execute("CREATE DATABASE sparkifydb", cursor)
     except psycopg2.Error as e:
         print("ERROR: Issue creating sparkifydb DB.")
         print(e)

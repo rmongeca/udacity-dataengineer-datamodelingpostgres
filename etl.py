@@ -74,16 +74,14 @@ def process_log_file(cursor, filepath):
     for index, row in df.iterrows():
 
         # get songid and artistid from song and artist tables
-        sql.execute(
+        succ = sql.execute(
             sql.SONG_SELECT, cursor, (row.song, row.artist, row.length))
-        results = cursor.fetchone()
-
-        if results:
-            songid, artistid = results
+        if succ:
+            results = cursor.fetchone()
         else:
-            # If ids not found, song/artist is not in dimension tables
-            # print("SongId/ArtistId not found in Songs/Artists tables.")
-            songid, artistid = None, None
+            results = None
+        # If ids not found, song/artist is not in dimension tables
+        songid, artistid = results if results else None, None
 
         # insert songplay record
         songplay_data = (

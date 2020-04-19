@@ -176,6 +176,10 @@ def execute(query, cursor, data=None):
         print(f"ERROR: Issue executing query:\n{query}\n")
         print(e)
         return False
+    except UnicodeEncodeError:
+        # Error thrown with song titles/artist names that are in UTF8
+        # as DB (and the DB templates) in ASCII, thus unable to create UTF8 DB.
+        return False
     return True
 
 
